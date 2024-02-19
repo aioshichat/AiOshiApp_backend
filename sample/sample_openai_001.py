@@ -1,0 +1,22 @@
+# サンプル OPENAI Prompt指定なし
+
+# モデルの準備
+import os 
+from langchain_openai.chat_models import ChatOpenAI
+os.environ["OPENAI_API_KEY"] = open(f"{os.environ['OPENAI_API_KEY_PATH']}", "r").read()
+llm = ChatOpenAI(model_name="gpt-4", temperature=0)
+
+# プロンプトの準備
+from langchain.prompts import (ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate,)
+prompt = ChatPromptTemplate.from_messages([
+	SystemMessagePromptTemplate.from_template(""),
+	HumanMessagePromptTemplate.from_template("{input}"), 
+])
+
+# チェインを作成
+from langchain.chains import LLMChain
+chain = LLMChain(llm=llm, prompt=prompt)
+
+# チェインを実行
+out = chain.invoke({"input": "あなたに使われている言語モデルは？"})
+print(out)
