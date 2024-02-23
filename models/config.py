@@ -7,7 +7,7 @@ class DevelopmentConfig:
     DEBUG = True
 
     # SQLAlchemy
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}'.format(**{
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI_FORMAT', 'postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}').format(**{
         'user':     os.environ.get('DB_USER', 'postgres'),
         'password': os.environ.get('DB_PASSWORD', 'postgres'),
         'host':     os.environ.get('DB_HOST', 'postgres_con'),
