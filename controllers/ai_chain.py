@@ -16,7 +16,7 @@ class AIChain:
 
     def invoke_openai(self, prompt_system="", template="{input}", message=""):
         # LLM作成
-        llm = ChatOpenAI(model_name="gpt-4", temperature=0)
+        llm = ChatOpenAI(model_name=f"{os.environ['OPENAI_VERSION']}", temperature=0)
         # プロンプトの準備
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(prompt_system),
@@ -34,7 +34,7 @@ class AIChain:
 
     def invoke_gemini(self, prompt_system="", template="{input}", message=""):
         # LLM作成
-        llm = ChatGoogleGenerativeAI(model="gemini-pro", convert_system_message_to_human=True)
+        llm = ChatGoogleGenerativeAI(model=f"{os.environ['GEMINI_VERSION']}", convert_system_message_to_human=True)
         # プロンプトの準備
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(prompt_system),
