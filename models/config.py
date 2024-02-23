@@ -12,7 +12,7 @@ class DevelopmentConfig:
         'password': os.environ.get('DB_PASSWORD', 'postgres'),
         'host':     os.environ.get('DB_HOST', 'postgres_con'),
         'port':     os.environ.get('DB_PORT', '5432'),
-        'name':     os.environ.get('DB_NAME', 'oshi_ai_db'),
+        'name':     os.environ.get('DB_NAME', 'ai_oshi_db'),
     })
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
