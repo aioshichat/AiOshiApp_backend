@@ -17,5 +17,5 @@ WORKDIR /usr/src
 
 EXPOSE 80
 
-CMD ["uwsgi", "--ini", "wsgi.ini", "&"]
+CMD ["/startup.sh"]
 
