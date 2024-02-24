@@ -15,5 +15,5 @@ WORKDIR /usr/src
 
 EXPOSE 80
 
-CMD ["/startup.sh"]
+CMD ["/bin/bash", "-c"]
 

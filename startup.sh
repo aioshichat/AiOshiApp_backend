@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-
-# python ./main.py gpt4
+uwsgi --ini wsgi.ini &
+nginx
 
 tail -F /dev/null
