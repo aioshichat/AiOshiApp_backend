@@ -17,5 +17,8 @@ WORKDIR /usr/src
 
 EXPOSE 80
 
+COPY startup.sh /
+RUN chmod +x /startup.sh
+
 CMD ["/startup.sh"]
 
