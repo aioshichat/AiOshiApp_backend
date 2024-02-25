@@ -1,5 +1,5 @@
 from flask import Flask
-from controllers import router
+from controllers import router_line
 from models.database import init_db
 
 def create_app():
@@ -7,7 +7,7 @@ def create_app():
     app.config.from_object('models.config.Config')
     init_db(app)
 
-    app.register_blueprint(router.router)
+    app.register_blueprint(router_line.router)
 
     return app
 

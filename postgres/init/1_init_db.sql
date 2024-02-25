@@ -20,7 +20,6 @@ CREATE TABLE oshi_setting (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
 DROP TABLE IF EXISTS oshi_prompt;
 CREATE TABLE oshi_prompt (
     id serial PRIMARY KEY,
@@ -30,7 +29,15 @@ CREATE TABLE oshi_prompt (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
+DROP TABLE IF EXISTS user_info;
+CREATE TABLE user_info (
+    id serial PRIMARY KEY,
+    user_id text,
+    oshi_id integer,
+    memo text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 
 -- サンプルデータ挿入
