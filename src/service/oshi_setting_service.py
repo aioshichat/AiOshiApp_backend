@@ -12,7 +12,7 @@ def get_oshi_setting(oshi_setting_id):
             return Response(response=json.dumps({
                 "api_code": 400,
                 "api_message": err,
-            }), status=400)
+            }, ensure_ascii=False), status=400)
 
         response = json.dumps({
             "api_code": 200,
@@ -27,7 +27,7 @@ def get_oshi_setting(oshi_setting_id):
             "hopes": oshi_setting["hopes"],
             "additional_profile": oshi_setting["additional_profile"],
             "hope_words": oshi_setting["hope_words"],
-        })
+        }, ensure_ascii=False)
 
 
         return Response(response=response, status=200)
@@ -37,7 +37,7 @@ def get_oshi_setting(oshi_setting_id):
         return Response(response=json.dumps({
             "api_code": 500,
             "api_message": "Server Internal Error",
-        }), status=500)
+        }, ensure_ascii=False), status=500)
     
 
 def update_oshi_setting(oshi_setting_id):
@@ -65,18 +65,18 @@ def update_oshi_setting(oshi_setting_id):
             return Response(response=json.dumps({
                 "api_code": 400,
                 "api_message": err,
-            }), status=400)
+            }, ensure_ascii=False), status=400)
 
 
         return Response(response=json.dumps({
                 "api_code": 200,
                 "api_message": "OK!",
-            }), status=200)
+            }, ensure_ascii=False), status=200)
     
     except Exception as err:
         print(err)
         return Response(response=json.dumps({
             "api_code": 500,
             "api_message": "Server Internal Error",
-        }), status=500)
+        }, ensure_ascii=False), status=500)
     
