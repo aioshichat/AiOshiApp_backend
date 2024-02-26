@@ -2,6 +2,7 @@
 CREATE DATABASE ai_oshi_db;
 -- 作成したDBに接続
 \c ai_oshi_db;
+
 -- テーブル作成
 DROP TABLE IF EXISTS oshi_setting;
 CREATE TABLE oshi_setting (
@@ -34,6 +35,15 @@ CREATE TABLE user_info (
     id serial PRIMARY KEY,
     user_id text,
     oshi_id integer,
+    memo text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS oshi;
+CREATE TABLE oshi (
+    id serial PRIMARY KEY,
+    user_info_id integer,
     memo text,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP

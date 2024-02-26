@@ -27,7 +27,7 @@ class OshiSetting(db.Model):
         if instance == None:
             return None, f"oshi_setting not found where oshi_setting_id = {oshi_setting_id}"
 
-        array = {
+        oshi_setting = {
             "first_person": instance.first_person,
             "called_name": instance.called_name,
             "second_person": instance.second_person,
@@ -40,7 +40,7 @@ class OshiSetting(db.Model):
             "hope_words": instance.hope_words,
         }
             
-        return array, None
+        return oshi_setting, None
 
 
     def update_oshi_setting(oshi_setting_id, update_data):
