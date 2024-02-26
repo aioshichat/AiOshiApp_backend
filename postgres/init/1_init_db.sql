@@ -4,6 +4,25 @@ CREATE DATABASE ai_oshi_db;
 \c ai_oshi_db;
 
 -- テーブル作成
+DROP TABLE IF EXISTS user_info;
+CREATE TABLE user_info (
+    id serial PRIMARY KEY,
+    user_id text,
+    oshi_id integer,
+    memo text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS oshi;
+CREATE TABLE oshi (
+    id serial PRIMARY KEY,
+    user_info_id integer,
+    memo text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 DROP TABLE IF EXISTS oshi_setting;
 CREATE TABLE oshi_setting (
     id serial PRIMARY KEY,
@@ -30,29 +49,19 @@ CREATE TABLE oshi_prompt (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS user_info;
-CREATE TABLE user_info (
-    id serial PRIMARY KEY,
-    user_id text,
-    oshi_id integer,
-    memo text,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-DROP TABLE IF EXISTS oshi;
-CREATE TABLE oshi (
-    id serial PRIMARY KEY,
-    user_info_id integer,
-    memo text,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
 
 
 -- サンプルデータ挿入
+-- user_info
+INSERT INTO user_info VALUES(DEFAULT, 'test1', '1', 'test data', DEFAULT, DEFAULT);
+INSERT INTO user_info VALUES(DEFAULT, 'test2', '2', 'test data', DEFAULT, DEFAULT);
+
+-- oshi
+INSERT INTO oshi VALUES(DEFAULT, 1, 'test data', DEFAULT, DEFAULT);
+INSERT INTO oshi VALUES(DEFAULT, 2, 'test data', DEFAULT, DEFAULT);
 
 -- oshi_setting
+INSERT INTO oshi_setting VALUES(DEFAULT, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', DEFAULT, DEFAULT);
 INSERT INTO oshi_setting VALUES(DEFAULT, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', DEFAULT, DEFAULT);
 
 -- oshi_prompt
