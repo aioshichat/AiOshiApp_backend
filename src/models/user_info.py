@@ -13,35 +13,61 @@ class UserInfo(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone(timedelta(hours=+9), 'Asia/Tokyo')))
 
 
+    def add_user_info(session, add_data):
+        
+        # 指定のユーザ情報追加
+        instance = UserInfo()
+        instance.user_id = add_data.get('user_id', None)
+        instance.oshi_id = add_data.get('oshi_id', None)
+        instance.memo = add_data.get('memo', None)
+        
+        session.add(instance)  
+        session.flush()
+        session.refresh(instance)
+
+        user_info = {
+            'id': instance.id,
+            'user_id': instance.user_id,
+            'oshi_id': instance.oshi_id,
+            'memo': instance.memo,
+            'created_at': instance.created_at,
+            'updated_at': instance.updated_at,
+        }
+            
+        return user_info, None
+
+
     def get_user_info(user_id):
         
         # DBから指定のユーザ情報取得
         instance = UserInfo.query.filter_by(user_id=user_id).first()
         if instance == None:
-            return None, f"user not found"
+            return None, f"user_info not found"
             
-        user = {
+        user_info = {
             'id': instance.id,
             'user_id': instance.user_id,
             'oshi_id': instance.oshi_id,
             'memo': instance.memo,
-            'updated_at': instance.updated_at,
             'created_at': instance.created_at,
+            'updated_at': instance.updated_at,
         }
             
-        return user, None
+        return user_info, None
 
-    
-    def add_user_info(add_data):
+
+    def update_user_info(session, user_id, update_data):
+        # DBの指定のIDのプロンプト情報更新
+        instance = UserInfo.query.filter_by(user_id=user_id).first()
+        if instance == None:
+            return f"user_info not found where user_id = {user_id}"
         
-        # 指定のユーザ情報追加
-        user = UserInfo()
-        user.user_id = add_data.get('user_id', None)
-        user.oshi_id = add_data.get('oshi_id', None)
-        user.memo = add_data.get('memo', None)
-        
-        db.session.add(user)  
-        db.session.commit()
+        if update_data.get('oshi_id') != None: instance.oshi_id = update_data.get('oshi_id')
+        if update_data.get('memo') != None: instance.memo = update_data.get('memo')
+
+        # データを確定
+        session.flush()
             
         return None
+
     
