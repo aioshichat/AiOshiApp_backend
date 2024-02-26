@@ -16,7 +16,7 @@ class Oshi(db.Model):
         
         # 指定のユーザ情報追加
         instance = Oshi()
-        instance.user_info_id = add_data.get('user_id', None)
+        instance.user_info_id = add_data.get('user_info_id', None)
         instance.memo = add_data.get('memo', None)
         
         session.add(instance)  
