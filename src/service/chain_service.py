@@ -1,9 +1,11 @@
 import os
 from flask import Response, json, request
+from langchain.memory import ConversationBufferMemory
 from models.database import db
 from models.oshi_prompts import OshiPrompt
 from models.user_info import UserInfo
 from models.oshi import Oshi
+from models.oshi_memories import OshiMemory
 from controllers import ai_chain
 
 
@@ -35,6 +37,9 @@ def invoke_common_logic(invoke_func):
 
     # message作成
     message = {"input": send_message}
+
+    # memory作成
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
     out = None
     try:
@@ -110,7 +115,8 @@ def invoke_openai_logic_line(user_id, message):
     # 推しID取得
     oshi_id = user_info["oshi_id"]
 
-    if '# 推しの呼び名' in message:
+    PROMPT_JUDGE_STRING = os.environ.get('PROMPT_JUDGE_STRING', '# 推しの呼び名')
+    if PROMPT_JUDGE_STRING in message:
         # message内容がプロンプト情報の場合、oshi_promptを更新する
         try:
             ## session生成
@@ -144,16 +150,46 @@ def invoke_openai_logic_line(user_id, message):
     # template作成
     template = "{input}"
 
-    # message作成
-    # message = {"input": send_message}
+    # 履歴情報の設定
+    ## 履歴情報をDBから取得
+    MEMORY_INVOKE_LIMIT = os.environ.get('MEMORY_INVOKE_LIMIT', 3)
+    oshi_memories, err = OshiMemory.get_oshi_memory(oshi_id, MEMORY_INVOKE_LIMIT)
+    ## 履歴情報のインスタンス作成
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    ## for文で履歴情報をmemory追加
+    for oshi_memory in oshi_memories:   
+        memory.save_context({'input': oshi_memory['input']}, {'output': oshi_memory['output']})
 
     out = None
     # APIを実行してAIからの回答を取得する
     obj = ai_chain.AIChain()
-    out = obj.invoke_openai(prompt_system, template, message)
+    out = obj.invoke_openai(prompt_system, template, message, memory)
     print(out)
+
+    # 履歴情報を保存
+    try:
+        ## session生成
+        session = db.session
+        
+        ## DBに今回の会話内容を追加
+        oshi_memories, err = OshiMemory.add_oshi_memory(session, {'oshi_id': oshi_id, 'input': out['input'], 'output': out['text']})
+        ## 上限件数以上のデータを古い順にDBから削除 
+        MEMORY_DB_LIMIT = os.environ.get('MEMORY_DB_LIMIT', 20)
+        oshi_memories, err = OshiMemory.delete_oshi_memory(session, oshi_id, MEMORY_DB_LIMIT)
+
+        ## sessionをcommit
+        session.commit()
+
+    except Exception as err:
+        session.rollback()
+        print(err)
+
+    finally:
+        session.close()
+
     received_message = out["text"]
     return received_message
+
 
 
 def invoke_gemini_logic_line(user_id, message):
@@ -194,7 +230,8 @@ def invoke_gemini_logic_line(user_id, message):
     # 推しID取得
     oshi_id = user_info["oshi_id"]
 
-    if '# 推しの呼び名' in message:
+    PROMPT_JUDGE_STRING = os.environ.get('PROMPT_JUDGE_STRING', '# 推しの呼び名')
+    if PROMPT_JUDGE_STRING in message:
         # message内容がプロンプト情報の場合、oshi_promptを更新する
         try:
             ## session生成
