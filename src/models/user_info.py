@@ -20,6 +20,8 @@ class UserInfo(db.Model):
         instance.user_id = add_data.get('user_id', None)
         instance.oshi_id = add_data.get('oshi_id', None)
         instance.memo = add_data.get('memo', None)
+        instance.created_at = db.func.statement_timestamp()
+        instance.update_at = db.func.statement_timestamp()
         
         session.add(instance)  
         session.flush()
@@ -64,6 +66,7 @@ class UserInfo(db.Model):
         
         if update_data.get('oshi_id') != None: instance.oshi_id = update_data.get('oshi_id')
         if update_data.get('memo') != None: instance.memo = update_data.get('memo')
+        instance.update_at = db.func.statement_timestamp()
 
         # データを確定
         session.flush()

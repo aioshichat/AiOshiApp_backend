@@ -30,7 +30,7 @@ def invokeOpenAIAPI() -> str:
     try:
         print(body)
         handler_openai.handle(body, signature)
-    except InvalidSignatureError:
+    except InvalidSignatureError as err:
         print(err)
         abort(400)
 

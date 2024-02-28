@@ -14,17 +14,18 @@ class AIChain:
         os.environ["GOOGLE_API_KEY"] = open(f"{os.environ['GOOGLE_API_KEY_PATH']}", "r").read()
 
 
-    def invoke_openai(self, prompt_system="", template="{input}", message=""):
+    def invoke_openai(self, prompt_system="", template="{input}", message="", memory=None):
         # LLM作成
         llm = ChatOpenAI(model_name=f"{os.environ['OPENAI_VERSION']}", temperature=0)
         # プロンプトの準備
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(prompt_system),
+	        MessagesPlaceholder(variable_name="chat_history"),
             HumanMessagePromptTemplate.from_template(template), 
         ])
 
         # chain生成
-        chain = LLMChain(llm=llm, prompt=prompt)
+        chain = LLMChain(llm=llm, prompt=prompt, verbose=False, memory=memory)
 
         # チェインを実行：APIを実行して応答を受け取る
         out = chain.invoke(message)

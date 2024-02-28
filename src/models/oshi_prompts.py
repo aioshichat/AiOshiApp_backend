@@ -18,6 +18,8 @@ class OshiPrompt(db.Model):
         instance = OshiPrompt()
         instance.oshi_id = add_data.get('oshi_id', None)
         instance.prompt = add_data.get('prompt', None)
+        instance.created_at = db.func.statement_timestamp()
+        instance.update_at = db.func.statement_timestamp()
         
         session.add(instance)  
         session.flush()
