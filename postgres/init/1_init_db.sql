@@ -49,6 +49,16 @@ CREATE TABLE oshi_prompt (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS oshi_memory;
+CREATE TABLE oshi_memory (
+    id serial PRIMARY KEY,
+    oshi_id integer NOT NULL,
+    input text NOT NULL,
+    output text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
 -- サンプルデータ挿入
@@ -167,3 +177,8 @@ INSERT INTO oshi_prompt VALUES(DEFAULT, 2, 'あなたは、関東人のロール
 - 出力文は150文字以内で返してください。
 - 感情パラメーターに応じて、対話の内容やトーンを調整してください', DEFAULT, DEFAULT);
 
+-- oshi_memory
+INSERT INTO oshi_memory VALUES(DEFAULT, 1, 'こんにちは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
+INSERT INTO oshi_memory VALUES(DEFAULT, 1, 'こんばんは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
+INSERT INTO oshi_memory VALUES(DEFAULT, 2, 'こんにちは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
+INSERT INTO oshi_memory VALUES(DEFAULT, 2, 'こんばんは', 'これはtestレスポンスです', DEFAULT, DEFAULT);

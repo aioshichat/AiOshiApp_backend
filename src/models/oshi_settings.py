@@ -59,6 +59,7 @@ class OshiSetting(db.Model):
         instance.hopes = update_data["hopes"]
         instance.additional_profile = update_data["additional_profile"]
         instance.hope_words = update_data["hope_words"]
+        instance.update_at = db.func.statement_timestamp()
 
         # データを確定
         db.session.commit()

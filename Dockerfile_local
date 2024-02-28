@@ -8,12 +8,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update
 RUN apt-get -y install nginx
 
-COPY startup.sh /
-RUN chmod +x /startup.sh
+RUN rm /etc/nginx/sites-enabled/default
+COPY conf/uwsgi.conf /etc/nginx/sites-enabled/
+
+# COPY src /usr/src
 
 WORKDIR /usr/src
 
 EXPOSE 80
 
-CMD ["/bin/bash", "-c"]
+COPY startup.sh /
+RUN chmod +x /startup.sh
+
+CMD ["tail", "-F", "/dev/null"]
 
