@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, abort, request
-from service import chain_service
+from service import chain_service, reply_token_service
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, Source, TextMessage, TextSendMessage
@@ -58,8 +58,18 @@ def handle_message(event: MessageEvent) -> None:
     text_message: TextMessage = event.message
     source: Source = event.source
     user_id: str = source.user_id
+    reply_token: str = event.reply_token
+
+    # reply_tokenが古い?とレスポンス時にエラーが発生し、再送される→エラーが発生する、のループに入ってしまう
+    # 正常応答済みのreply_tokenが来た場合、即座にreturnする
+    is_exists = reply_token_service.is_reply_token_exists(reply_token)
+    if is_exists:
+        return
 
     res_text: str = chain_service.invoke_openai_logic_line(user_id, text_message.text)
+
+    # DBのreply_token更新
+    reply_token_service.update_reply_token(user_id, reply_token)
 
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text=res_text.strip())

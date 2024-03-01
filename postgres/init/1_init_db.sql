@@ -59,6 +59,14 @@ CREATE TABLE oshi_memory (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS line_reply_token;
+CREATE TABLE line_reply_token (
+    id serial PRIMARY KEY,
+    user_id text NOT NULL,
+    reply_token text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 
 -- サンプルデータ挿入
