@@ -19,7 +19,7 @@ class LineReplyToken(db.Model):
         instance.user_id = add_data.get('user_id')
         instance.reply_token = add_data.get('reply_token')
         instance.created_at = db.func.statement_timestamp()
-        instance.update_at = db.func.statement_timestamp()
+        instance.updated_at = db.func.statement_timestamp()
         
         session.add(instance)  
         session.flush()

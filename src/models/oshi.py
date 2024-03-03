@@ -18,6 +18,8 @@ class Oshi(db.Model):
         instance = Oshi()
         instance.user_info_id = add_data.get('user_info_id', None)
         instance.memo = add_data.get('memo', None)
+        instance.created_at = db.func.statement_timestamp()
+        instance.updated_at = db.func.statement_timestamp()
         
         session.add(instance)  
         session.flush()
