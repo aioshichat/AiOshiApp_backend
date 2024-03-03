@@ -26,16 +26,19 @@ CREATE TABLE oshi (
 DROP TABLE IF EXISTS oshi_setting;
 CREATE TABLE oshi_setting (
     id serial PRIMARY KEY,
+    oshi_id integer NOT NULL,
+    oshi_name text NOT NULL,
+    oshi_info text NOT NULL,
+    nickname text NOT NULL,
     first_person text NOT NULL,
-    called_name text NOT NULL,
     second_person text NOT NULL,
-    tone text,
-    forbidden_words text,
-    memories text,
+    speaking_tone text NOT NULL,
+    unused_words text NOT NULL,
+    dialogues text NOT NULL,
+    wanted_words text NOT NULL,
     relationship text NOT NULL,
-    hopes text NOT NULL,
-    additional_profile text,
-    hope_words text,
+    wanted_action text NOT NULL,
+    memories text NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -79,8 +82,8 @@ INSERT INTO oshi VALUES(DEFAULT, 1, 'test data', DEFAULT, DEFAULT);
 INSERT INTO oshi VALUES(DEFAULT, 2, 'test data', DEFAULT, DEFAULT);
 
 -- oshi_setting
-INSERT INTO oshi_setting VALUES(DEFAULT, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', DEFAULT, DEFAULT);
-INSERT INTO oshi_setting VALUES(DEFAULT, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', DEFAULT, DEFAULT);
+INSERT INTO oshi_setting VALUES(DEFAULT, 1, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', 'KKKKK', 'LLLLL', DEFAULT, DEFAULT);
+INSERT INTO oshi_setting VALUES(DEFAULT, 2, 'AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE', 'FFFFF', 'GGGGG', 'HHHHH', 'IIIII', 'JJJJJ', 'KKKKK', 'LLLLL', DEFAULT, DEFAULT);
 
 -- oshi_prompt
 INSERT INTO oshi_prompt VALUES(DEFAULT, 1, '', DEFAULT, DEFAULT);
