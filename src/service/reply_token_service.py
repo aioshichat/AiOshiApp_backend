@@ -9,7 +9,7 @@ def is_reply_token_exists(reply_token):
 
     is_exists = False
     ## 存在する場合、True
-    if line_reply_token != None and len(line_reply_token) > 1:
+    if line_reply_token != None and len(line_reply_token) >= 1:
         is_exists = True
 
     return is_exists

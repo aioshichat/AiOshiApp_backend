@@ -64,6 +64,7 @@ def handle_message(event: MessageEvent) -> None:
     # 正常応答済みのreply_tokenが来た場合、即座にreturnする
     is_exists = reply_token_service.is_reply_token_exists(reply_token)
     if is_exists:
+        print("skip invoke_openai_logic_line() because reply token duplication")
         return
 
     res_text: str = chain_service.invoke_openai_logic_line(user_id, text_message.text)

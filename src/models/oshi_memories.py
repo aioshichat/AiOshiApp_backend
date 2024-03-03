@@ -23,7 +23,7 @@ class OshiMemory(db.Model):
         instance.input = add_data.get('input', "")
         instance.output = add_data.get('output', "")
         instance.created_at = db.func.statement_timestamp()
-        instance.update_at = db.func.statement_timestamp()
+        instance.updated_at = db.func.statement_timestamp()
         
         session.add(instance)
         session.flush()

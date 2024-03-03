@@ -1,4 +1,4 @@
 .secret/*
 !.secret/.gitkeep
 __pycache__
-src/sample*
+src/test/
