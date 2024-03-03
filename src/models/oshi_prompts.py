@@ -19,7 +19,7 @@ class OshiPrompt(db.Model):
         instance.oshi_id = add_data.get('oshi_id', None)
         instance.prompt = add_data.get('prompt', None)
         instance.created_at = db.func.statement_timestamp()
-        instance.update_at = db.func.statement_timestamp()
+        instance.updated_at = db.func.statement_timestamp()
         
         session.add(instance)  
         session.flush()
@@ -46,23 +46,37 @@ class OshiPrompt(db.Model):
             instance = OshiPrompt.query.filter_by(oshi_id=oshi_id).first()
             if instance == None:
                 return None, f"oshi_prompt not found where oshi_id = {oshi_id}"
-                
-            prompt_system = instance.prompt
+
+        oshi_prompt = {
+            'id': instance.id,
+            'oshi_id': instance.oshi_id,
+            'prompt': instance.prompt,
+            'created_at': instance.created_at,
+            'updated_at': instance.updated_at,
+        }
             
-        return prompt_system, None
+        return oshi_prompt, None
 
 
     def update_oshi_prompt(session, oshi_id, update_data):
         # DBの指定のIDのプロンプト情報更新
         instance = OshiPrompt.query.filter_by(oshi_id=oshi_id).first()
         if instance == None:
-            return f"oshi_prompt not found where oshi_id = {oshi_id}"
+            return None, f"oshi_prompt not found where oshi_id = {oshi_id}",
         
-        if update_data.get('prompt') != None: instance.prompt = update_data.get('prompt')
+        if update_data.get('prompt') != None: instance.prompt = update_data['prompt']
 
         # データを確定
         session.flush()
+
+        oshi_prompt = {
+            'id': instance.id,
+            'oshi_id': instance.oshi_id,
+            'prompt': instance.prompt,
+            'created_at': instance.created_at,
+            'updated_at': instance.updated_at,
+        }
             
-        return None
+        return oshi_prompt, None
 
     
