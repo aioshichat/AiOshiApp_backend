@@ -1,14 +1,10 @@
 from flask import Flask
 from controllers import router_liff
 from models.database import init_db
-from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    CORS(
-        app,
-        supports_credentials=True
-    )
+
     app.config.from_object('models.config.Config')
     init_db(app)
 
