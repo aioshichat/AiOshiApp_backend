@@ -1,0 +1,24 @@
+
+
+
+
+POST http://localhost:8080/liffapi/v1/oshi/settings/update
+content-type: application/json
+
+{
+	"access_token":"",
+	"request_data":{
+		"oshi_name":"oshi_name",
+		"oshi_info":"oshi_info",
+		"nickname":"nickname",
+		"first_person":"first_person",
+		"second_person":"second_person",
+		"speaking_tone":"speaking_tone",
+		"unused_words":"unused_words",
+		"dialogues":"dialogues",
+		"wanted_words":"wanted_words",
+		"relationship":"relationship",
+		"wanted_action":"wanted_action",
+		"memories":"memories"
+	}
+}
