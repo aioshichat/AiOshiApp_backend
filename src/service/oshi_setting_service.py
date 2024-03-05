@@ -228,7 +228,6 @@ def update_oshi_setting_liff():
         oshi_id = user_info["oshi_id"]
 
         # request bodyからデータ取得
-        request_data = request.json
         request_data = request_data["request_data"]
 
         oshi_name = request_data["oshi_name"]

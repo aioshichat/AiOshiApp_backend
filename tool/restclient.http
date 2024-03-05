@@ -1,9 +1,15 @@
 
+POST http://localhost:8080/liffapi/v1/oshi/settings/get HTTP/1.1
+Content-Type: application/json
 
+{
+	"access_token":""
+}
 
+###
 
-POST http://localhost:8080/liffapi/v1/oshi/settings/update
-content-type: application/json
+POST http://localhost:8080/liffapi/v1/oshi/settings/update HTTP/1.1
+Content-Type: application/json
 
 {
 	"access_token":"",
