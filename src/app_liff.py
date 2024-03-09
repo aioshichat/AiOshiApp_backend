@@ -9,7 +9,7 @@ def create_app():
     #     app,
     #     supports_credentials=True
     # )
-    CORS(app, origins=["*"], methods=["POST"])
+    # CORS(app, origins=["*"], methods=["POST"])
 
     app.config.from_object('models.config.Config')
     init_db(app)
