@@ -1,5 +1,6 @@
 from flask import Blueprint
 from service import oshi_setting_service
+# from flask_cors import cross_origin
 
 # Generate Router Instance
 router = Blueprint('router_liff', __name__)
