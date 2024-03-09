@@ -7,3 +7,4 @@ flask_sqlalchemy
 psycopg2
 uwsgi
 line-bot-sdk
+flask_cors
