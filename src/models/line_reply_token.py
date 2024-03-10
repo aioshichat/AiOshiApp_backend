@@ -53,7 +53,7 @@ class LineReplyToken(db.Model):
 
         # 24時間前の日付時刻文字列を取得
         d = datetime.now() - timedelta(1)
-        d_str = d.strftime("%Y-%m-%d %I:%M:%S")
+        d_str = d.strftime("%Y-%m-%d %H:%M:%S")
         
         # 指定の会話履歴
         instance = LineReplyToken.query.filter(LineReplyToken.created_at <= d_str).all()

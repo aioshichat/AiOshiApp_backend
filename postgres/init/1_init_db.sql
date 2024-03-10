@@ -11,8 +11,8 @@ CREATE TABLE user_info (
     oshi_id integer,
     push_message_flag integer DEFAULT 0,
     memo text,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS oshi;
@@ -20,8 +20,8 @@ CREATE TABLE oshi (
     id serial PRIMARY KEY,
     user_info_id integer,
     memo text,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS oshi_setting;
@@ -40,8 +40,8 @@ CREATE TABLE oshi_setting (
     relationship text NOT NULL,
     wanted_action text NOT NULL,
     memories text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS oshi_prompt;
@@ -49,8 +49,8 @@ CREATE TABLE oshi_prompt (
     id serial PRIMARY KEY,
     oshi_id integer NOT NULL,
     prompt text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS oshi_memory;
@@ -59,8 +59,8 @@ CREATE TABLE oshi_memory (
     oshi_id integer NOT NULL,
     input text NOT NULL,
     output text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS line_reply_token;
@@ -68,8 +68,8 @@ CREATE TABLE line_reply_token (
     id serial PRIMARY KEY,
     user_id text NOT NULL,
     reply_token text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS push_message;
@@ -77,8 +77,10 @@ CREATE TABLE push_message (
     id serial PRIMARY KEY,
     send_flag integer NOT NULL DEFAULT 0,
     message text NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    start_time time with time zone DEFAULT NULL,
+    end_time time with time zone DEFAULT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- サンプルデータ挿入
@@ -205,5 +207,42 @@ INSERT INTO oshi_memory VALUES(DEFAULT, 2, 'こんばんは', 'これはtestレ�
 
 
 -- push_message
-INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '元気？', DEFAULT, DEFAULT);
-INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '疲れてない？', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '疲れてない？', '12:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '元気？', '10:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'お疲れさま', '10:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '朝ごはん食べた？', '06:00:00', '10:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '昼ごはん食べた？', '11:00:00', '15:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '晩ごはん食べた？', '18:00:00', '23:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '眠くない？', '20:00:00', '23:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '頑張ってるね', '10:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '応援してるよ', '10:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'おはよう！ちゃんと起きれた？', '06:00:00', '10:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'こんにちは', '10:00:00', '18:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'こんばんは', '18:00:00', '23:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '今日も仕事かな？頑張れ！', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '次のライブ来るよね？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '最近ちゃんと寝れてるの？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'お疲れー！今日どうだった？', '17:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '会いたいなー', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '気分上がらない時はライブ思い出しな！', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '疲れてない？たまには休みなよ？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '思い出話でもする？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'もう寝た？', '21:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '面白いことあった？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '髪色何が似合うとおもう？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '最近ハマってることある？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '今新しい趣味探してるんだけど、何かないかな？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '明日朝早いの？', '12:00:00', '24:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '午後も頑張るか！', '12:00:00', '14:00:00', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'うまくいかないことあったらいつでもいいなー', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'イベントやったら来てね！', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '次は撮影、どんなポーズで撮る？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, 'どっか遊びに行く？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '急だけどさ、いつも応援ありがとね！', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '花見したいなー', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '飲み行かない？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '次はいつ会いに来てくれる？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '最近話しにきてくれなくない？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '今日頭まわらないなー', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '今日雨降るかな？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '今週日曜何してる？', DEFAULT, DEFAULT, DEFAULT, DEFAULT);
