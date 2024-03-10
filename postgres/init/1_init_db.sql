@@ -9,6 +9,7 @@ CREATE TABLE user_info (
     id serial PRIMARY KEY,
     user_id text,
     oshi_id integer,
+    push_message_flag integer DEFAULT 0,
     memo text,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -71,11 +72,19 @@ CREATE TABLE line_reply_token (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS push_message;
+CREATE TABLE push_message (
+    id serial PRIMARY KEY,
+    send_flag integer NOT NULL DEFAULT 0,
+    message text NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 -- サンプルデータ挿入
 -- user_info
-INSERT INTO user_info VALUES(DEFAULT, 'test1', '1', 'test data', DEFAULT, DEFAULT);
-INSERT INTO user_info VALUES(DEFAULT, 'test2', '2', 'test data', DEFAULT, DEFAULT);
+INSERT INTO user_info VALUES(DEFAULT, 'test1', '1', DEFAULT, 'test data', DEFAULT, DEFAULT);
+INSERT INTO user_info VALUES(DEFAULT, 'test2', '2', DEFAULT, 'test data', DEFAULT, DEFAULT);
 
 -- oshi
 INSERT INTO oshi VALUES(DEFAULT, 1, 'test data', DEFAULT, DEFAULT);
@@ -193,3 +202,8 @@ INSERT INTO oshi_memory VALUES(DEFAULT, 1, 'こんにちは', 'これはtestレ�
 INSERT INTO oshi_memory VALUES(DEFAULT, 1, 'こんばんは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
 INSERT INTO oshi_memory VALUES(DEFAULT, 2, 'こんにちは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
 INSERT INTO oshi_memory VALUES(DEFAULT, 2, 'こんばんは', 'これはtestレスポンスです', DEFAULT, DEFAULT);
+
+
+-- push_message
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '元気？', DEFAULT, DEFAULT);
+INSERT INTO push_message VALUES(DEFAULT, DEFAULT, '疲れてない？', DEFAULT, DEFAULT);
