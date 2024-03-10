@@ -66,4 +66,4 @@ for user in user_info:
     i += 1
 
 print(f"push message count: {i}")
-exit(0)
+exit(i)
