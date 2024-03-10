@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from models.database import db
+from models.oshi import Oshi
+from sqlalchemy.orm import join
 
 class UserInfo(db.Model):
 
@@ -8,6 +10,7 @@ class UserInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String)
     oshi_id = db.Column(db.Integer)
+    push_message_flag = db.Column(db.Integer, nullable=False, default=0)
     memo = db.Column(db.String)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone(timedelta(hours=+9), 'Asia/Tokyo')))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone(timedelta(hours=+9), 'Asia/Tokyo')))
@@ -56,6 +59,26 @@ class UserInfo(db.Model):
         }
             
         return user_info, None
+
+
+    def get_user_info_by_push_flag(push_message_flag):
+        
+        # DBから指定のユーザ情報取得
+        instance = UserInfo.query.filter_by(push_message_flag=push_message_flag).all()
+        user_info = []
+        for ins in instance:
+            user_info.append({
+                'id': ins.id,
+                'user_id': ins.user_id,
+                'oshi_id': ins.oshi_id,
+                'push_message_flag': ins.push_message_flag,
+                'memo': ins.memo,
+                'created_at': ins.created_at,
+                'updated_at': ins.updated_at,
+            })
+            
+        return user_info, None
+
 
 
     def update_user_info(session, user_id, update_data):

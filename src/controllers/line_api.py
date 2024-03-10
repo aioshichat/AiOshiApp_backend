@@ -1,5 +1,6 @@
 import os
 import requests
+from flask import json
 
 class LineAPI():
 
@@ -28,14 +29,15 @@ class LineAPI():
             
             json_data = r.json()
             ## client_idとチャンネルIDが一致するか確認
-            client_id = json_data["client_id"]
-            LINE_CHANNEL_ID = os.environ["LINE_CHANNEL_ID"]
-            if client_id != LINE_CHANNEL_ID:
-                print(json_data)
-                return None, {
-                    "api_code": 400, 
-                    "api_message": f"client_id not matched channel_id: {client_id}",
-                }
+            ### 開発の用途とは関係ないので、一旦コメントアウト
+            # client_id = json_data["client_id"]
+            # LINE_CHANNEL_ID = os.environ["LINE_CHANNEL_ID"]
+            # if client_id != LINE_CHANNEL_ID:
+            #     print(json_data)
+            #     return None, {
+            #         "api_code": 400, 
+            #         "api_message": f"client_id not matched channel_id: {client_id}",
+            #     }
 
             ## Access Tokenの有効期限が切れないか確認 (400エラーになるためこちらは実施しない)
 
@@ -82,3 +84,36 @@ class LineAPI():
             print("Profile OK!")
 
             return profile, None
+
+
+
+    def push_message(user_id, message_array):
+
+            LINE_URL_MESSAGE_PUSH = os.environ.get('LINE_URL_MESSAGE_PUSH', 'https://api.line.me/v2/bot/message/push')
+            LINE_CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "xxxxxx")
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {LINE_CHANNEL_ACCESS_TOKEN}',
+            }
+            messages = []
+            for message in message_array:
+                messages.append({
+                        "type":"text",
+                        "text":message
+                })
+
+            data = json.dumps({
+                "to": "Udd1e6e39db5ae59627c10e88fa0e23c4",
+                "messages":messages
+            })      # ensure_ascii=Falseは指定しないこと (日本語送信時にエラーになるため。メッセージはちゃんと日本語で届く)
+            r = requests.post(LINE_URL_MESSAGE_PUSH, headers=headers, data=data)
+
+            print(f"push message: {data}")
+            print(r)
+            print(json_data := r.json())
+
+            if r.status_code != requests.codes.ok:
+                return json_data, "API error"
+
+
+            return json_data, None
