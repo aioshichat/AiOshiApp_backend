@@ -6,10 +6,13 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update
-RUN apt-get -y install nginx
+RUN apt-get -y install nginx cron vim
 
 RUN rm /etc/nginx/sites-enabled/default
 COPY conf/uwsgi.conf /etc/nginx/sites-enabled/
+
+ADD conf/crontab /var/spool/cron/crontabs/root
+RUN crontab /var/spool/cron/crontabs/root
 
 # COPY src /usr/src
 

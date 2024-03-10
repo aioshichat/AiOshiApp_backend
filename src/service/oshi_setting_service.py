@@ -131,6 +131,7 @@ def get_oshi_setting_liff():
 
         ## user_id取得
         user_id = profile["userId"]
+        print(f"user_id: {user_id}")
 
         # user_info取得
         user_info, err = UserInfo.get_user_info(user_id)
@@ -221,6 +222,7 @@ def update_oshi_setting_liff():
 
         ## user_id取得
         user_id = profile["userId"]
+        print(f"user_id: {user_id}")
 
         # user_info取得
         user_info, err = UserInfo.get_user_info(user_id)
