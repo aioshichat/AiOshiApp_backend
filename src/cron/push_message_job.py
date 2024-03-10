@@ -6,7 +6,13 @@ from models.database import db, init_db
 from models.user_info import UserInfo
 from models.push_messages import PushMessage
 from models.oshi_memories import OshiMemory
+import random
+import time
 
+
+# 送信時間をずらすため、ランダム分数sleepを挟む
+t = random.randrange(30)
+time.sleep(t * 60)
 
 app = Flask(__name__)
 app.config.from_object('models.config.Config')

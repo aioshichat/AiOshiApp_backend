@@ -2,6 +2,9 @@ from datetime import datetime, timedelta, timezone
 from models.database import db
 from models.oshi import Oshi
 from sqlalchemy.orm import join
+from models.oshi_memories import OshiMemory
+from sqlalchemy import asc, desc, or_, and_
+from sqlalchemy.sql.expression import func
 
 class UserInfo(db.Model):
 
@@ -62,20 +65,34 @@ class UserInfo(db.Model):
 
 
     def get_user_info_by_push_flag(push_message_flag):
+
+        # 3日前の日付時刻文字列を取得
+        d_start = datetime.now() - timedelta(3)
+        d_start_str = d_start.strftime("%Y-%m-%d %H:%M:%S")
+        print(d_start_str)
+
+        d_end = datetime.now() - timedelta(3) / 24
+        d_end_str = d_end.strftime("%Y-%m-%d %H:%M:%S")
+        print(d_end_str)
         
         # DBから指定のユーザ情報取得
-        instance = UserInfo.query.filter_by(push_message_flag=push_message_flag).all()
+        instance1 = db.session.query(OshiMemory.oshi_id, func.count(OshiMemory.oshi_id)).filter(and_(OshiMemory.created_at >= d_start_str, OshiMemory.created_at <= d_end_str, OshiMemory.input != "")).group_by(OshiMemory.oshi_id).all()
         user_info = []
-        for ins in instance:
+        for ins1 in instance1:
+            instance2 = UserInfo.query.filter_by(push_message_flag=push_message_flag, oshi_id=ins1.oshi_id).first()
+            if instance2 == None:
+                continue
+
             user_info.append({
-                'id': ins.id,
-                'user_id': ins.user_id,
-                'oshi_id': ins.oshi_id,
-                'push_message_flag': ins.push_message_flag,
-                'memo': ins.memo,
-                'created_at': ins.created_at,
-                'updated_at': ins.updated_at,
+                'id': instance2.id,
+                'user_id': instance2.user_id,
+                'oshi_id': instance2.oshi_id,
+                'push_message_flag': instance2.push_message_flag,
+                'memo': instance2.memo,
+                'created_at': instance2.created_at,
+                'updated_at': instance2.updated_at,
             })
+        
             
         return user_info, None
 
