@@ -1,1 +1,2 @@
-0 0,3,6,9,12 * * * /usr/src/cron/exec_job.sh
+CRON_TZ=Asia/Tokyo
+0 9,12,15,18,21 * * * /usr/src/cron/exec_job.sh
