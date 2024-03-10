@@ -264,7 +264,15 @@ def update_oshi_setting_liff():
             "wanted_action": wanted_action,
             "memories": memories,
         }
-    
+
+
+        # memoriesの情報をAIに送信し、思い出エピソード生成
+        generated_episode, err = data_service.generate_episode_by_memory(oshi_name, relationship, memories)
+        if err != None:
+            # エラーの場合、一旦元々のmemoriesの値を格納する (処理は継続する)
+            generated_episode = memories
+
+
         # session生成
         session = db.session
 
@@ -306,8 +314,8 @@ def update_oshi_setting_liff():
 {relationship}
 # Userが{oshi_name}にしてほしいこと:
 {wanted_action}
-# Userと{oshi_name}との思い出:
-{memories}
+# User目線の{oshi_name}との思い出:
+{generated_episode}
 # {oshi_name}の行動指針:
 - {oshi_name}が自身を示す一人称を使用してください。
 - {oshi_name}が自身を示すときに呼び名は使用しないでください。
