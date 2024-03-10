@@ -23,5 +23,6 @@ EXPOSE 80
 COPY startup.sh /
 RUN chmod +x /startup.sh
 
-CMD ["tail", "-F", "/dev/null"]
+# CMD ["tail", "-F", "/dev/null"]
+CMD ["/startup.sh"]
 
