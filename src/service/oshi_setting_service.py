@@ -113,6 +113,7 @@ def get_oshi_setting_liff():
         # access tokenを認証
         result, err = LineAPI.auth_access_token(access_token)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": err["api_code"],
                 "api_message": err["api_message"],
@@ -121,6 +122,7 @@ def get_oshi_setting_liff():
         # access_tokenからprofileを取得
         profile, err = LineAPI.get_profile_access_token(access_token)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": err["api_code"],
                 "api_message": err["api_message"],
@@ -143,6 +145,7 @@ def get_oshi_setting_liff():
         # 推し設定項目取得
         oshi_setting, err = OshiSetting.get_oshi_setting(oshi_id)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": 400,
                 "api_message": err,
@@ -167,7 +170,7 @@ def get_oshi_setting_liff():
             },
         }, ensure_ascii=False)
 
-
+        print("success: get api")
         return Response(response=response, status=200)
     
     except Exception as err:
@@ -200,6 +203,7 @@ def update_oshi_setting_liff():
         # access tokenを認証
         result, err = LineAPI.auth_access_token(access_token)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": err["api_code"],
                 "api_message": err["api_message"],
@@ -208,6 +212,7 @@ def update_oshi_setting_liff():
         # access_tokenからprofileを取得
         profile, err = LineAPI.get_profile_access_token(access_token)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": err["api_code"],
                 "api_message": err["api_message"],
@@ -264,6 +269,7 @@ def update_oshi_setting_liff():
         # 推し設定項目更新
         oshi_setting, err = OshiSetting.update_oshi_setting(session, oshi_id, update_data)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": 400,
                 "api_message": err,
@@ -320,6 +326,7 @@ def update_oshi_setting_liff():
         ## oshi_promptを更新
         oshi_prompt, err = OshiPrompt.update_oshi_prompt(session, oshi_id, update_data)
         if err != None:
+            print(err)
             return Response(response=json.dumps({
                 "api_code": 400,
                 "api_message": err,
@@ -328,7 +335,7 @@ def update_oshi_setting_liff():
         ## sessionをcommit
         session.commit()
 
-
+        print("success: update api")
         return Response(response=json.dumps({
                 "api_code": 200,
                 "api_message": "OK!",
