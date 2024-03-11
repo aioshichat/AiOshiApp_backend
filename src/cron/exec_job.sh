@@ -8,7 +8,7 @@ retval=$?
 
 if [ $retval -ge 0 ]
 then
-    echo "[${DATE}] push_message_job succeeded. count: $retval." >> /usr/src/cron/cron.log
+    echo "[${DATE}] push_message_job succeeded. count: $retval." 1>>/proc/1/fd/1 2>>/proc/1/fd/2
 else
-    echo "[${DATE}] push_message_job failed." >> /usr/src/cron/cron.log
+    echo "[${DATE}] push_message_job failed." 1>>/proc/1/fd/1 2>>/proc/1/fd/2
 fi
