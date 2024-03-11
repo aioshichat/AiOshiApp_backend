@@ -103,7 +103,7 @@ class LineAPI():
                 })
 
             data = json.dumps({
-                "to": "Udd1e6e39db5ae59627c10e88fa0e23c4",
+                "to": user_id,
                 "messages":messages
             })      # ensure_ascii=Falseは指定しないこと (日本語送信時にエラーになるため。メッセージはちゃんと日本語で届く)
             r = requests.post(LINE_URL_MESSAGE_PUSH, headers=headers, data=data)
