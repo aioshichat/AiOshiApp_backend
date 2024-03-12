@@ -1,5 +1,4 @@
 CRON_TZ=Asia/Tokyo
 50 8 * * * /bin/bash -lc /usr/src/cron/exec_job.sh 1>>/proc/1/fd/1 2>>/proc/1/fd/2
 17 13 * * * /bin/bash -lc /usr/src/cron/exec_job.sh 1>>/proc/1/fd/1 2>>/proc/1/fd/2
-30 14 * * * /bin/bash -lc /usr/src/cron/exec_job.sh 1>>/proc/1/fd/1 2>>/proc/1/fd/2
 50 21 * * * /bin/bash -lc /usr/src/cron/exec_job.sh 1>>/proc/1/fd/1 2>>/proc/1/fd/2
