@@ -2,7 +2,7 @@
 
 DATE=`date`
 
-/usr/local/bin/python3 /usr/src/cron/push_message_job.py
+/usr/local/bin/python3 /usr/src/cron/push_message_job.py 1>>/proc/1/fd/1 2>>/proc/1/fd/2
 
 retval=$?
 
