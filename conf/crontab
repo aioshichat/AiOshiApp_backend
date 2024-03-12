@@ -1,5 +1,4 @@
 CRON_TZ=Asia/Tokyo
-50 8 * * * /usr/src/cron/exec_job.sh
-50 9 * * * /usr/src/cron/exec_job.sh
-17 13 * * * /usr/src/cron/exec_job.sh
-50 21 * * * /usr/src/cron/exec_job.sh
+50 8 * * * /bin/bash -lc "cron/exec_job.sh"
+17 13 * * * /bin/bash -lc "cron/exec_job.sh"
+50 21 * * * /bin/bash -lc "cron/exec_job.sh"

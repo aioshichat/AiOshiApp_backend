@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 from models.database import db
 from models.oshi import Oshi
@@ -67,11 +68,13 @@ class UserInfo(db.Model):
     def get_user_info_by_push_flag(push_message_flag):
 
         # 3日前の日付時刻文字列を取得
-        d_start = datetime.now() - timedelta(3)
+        PUSH_TIME_START_DATE = int(os.environ.get("PUSH_TIME_START_DATE", 3))
+        d_start = datetime.now() - timedelta(PUSH_TIME_START_DATE)
         d_start_str = d_start.strftime("%Y-%m-%d %H:%M:%S")
         print(d_start_str)
 
-        d_end = datetime.now() - timedelta(3) / 24
+        PUSH_TIME_END_HOUR = int(os.environ.get("PUSH_TIME_END_HOUR", 3))
+        d_end = datetime.now() - timedelta(PUSH_TIME_END_HOUR) / 24
         d_end_str = d_end.strftime("%Y-%m-%d %H:%M:%S")
         print(d_end_str)
         
