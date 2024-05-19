@@ -8,8 +8,8 @@ uwsgi --ini wsgi_line.ini &
 uwsgi --ini wsgi_liff.ini &
 # nginx起動
 nginx
-# cron起動
-/etc/init.d/cron start
+# cron起動 (環境変数の読み込みでエラーになるのでコメントアウト)
+# /etc/init.d/cron start
 
 # コンテナが落ちないように
 tail -F /dev/null
