@@ -8,6 +8,7 @@ from models.oshi_prompts import OshiPrompt
 from models.oshi_memories import OshiMemory
 from controllers import ai_chain
 from langchain.memory import ConversationBufferMemory
+from linebot import LineBotApi
 
 
 
@@ -19,8 +20,16 @@ def add_initial_data(user_id, message=""):
         ## session生成
         session = db.session
 
+        if not (access_token := os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")):
+            raise Exception("access token is not set as an environment variable")
+        line_bot_api = LineBotApi(access_token)
+
+        # user_idからユーザ名を取得
+        profile = line_bot_api.get_profile(user_id)
+        user_name = profile.display_name
+
         ## user_infoを生成
-        user_info, err = UserInfo.add_user_info(session, {'user_id':user_id, 'memo':f'added in {os.sys._getframe().f_code.co_name}()'})
+        user_info, err = UserInfo.add_user_info(session, {'user_id':user_id, 'user_name':user_name, 'memo':f'added in {os.sys._getframe().f_code.co_name}()'})
         user_info_id = user_info['id']
         ## oshiを生成
         oshi, err = Oshi.add_oshi(session, {'user_info_id':user_info_id, 'memo':f'added in {os.sys._getframe().f_code.co_name}()'})
@@ -77,3 +86,25 @@ def generate_episode_by_memory(oshi_name, relationship, memories):
         print(err)
         return None, err
 
+
+
+def create_user_data(user_id):
+
+    try:
+
+        # user_info取得
+        user_info, err = UserInfo.get_user_info(user_id)
+        if user_info == None:
+            # user_info情報が存在しない場合、DBリソースを生成し、プロンプトを反映
+            user_info, _, _, _, err = add_initial_data(user_id)
+            if err != None:
+                raise Exception(err)
+            print(f"success: create user data. user_id: ${user_id}")
+        else:
+            print(f"user already registered. user_id: ${user_id}")
+
+        return user_info, None
+    
+    except Exception as err:
+        print(err)
+        return None, err

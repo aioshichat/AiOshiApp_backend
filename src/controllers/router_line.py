@@ -1,9 +1,9 @@
-import os
+import os, time, random
 from flask import Blueprint, abort, request
-from service import chain_service, reply_token_service
+from service import chain_service, reply_token_service, data_service
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, Source, TextMessage, TextSendMessage
+from linebot.models import MessageEvent, FollowEvent, Source, TextMessage, TextSendMessage
 
 # Generate Router Instance
 router = Blueprint('router_line', __name__)
@@ -53,6 +53,7 @@ def invokeGeminiAPI() -> str:
     return "OK"
 
 
+# メッセージイベント
 @handler_openai.add(MessageEvent, message=TextMessage)
 def handle_message(event: MessageEvent) -> None:
     text_message: TextMessage = event.message
@@ -72,9 +73,23 @@ def handle_message(event: MessageEvent) -> None:
     # DBのreply_token更新
     reply_token_service.update_reply_token(user_id, reply_token)
 
+    # ランダム秒sleepを入れる (0〜環境変数指定の秒の範囲でランダム)
+    wait_second = random.randrange(os.environ.get('SLEEP_SECOND', 5))
+    time.sleep(wait_second)
+
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text=res_text.strip())
     )
+
+
+# 登録イベント
+@handler_openai.add(FollowEvent)
+def handle_message(event: FollowEvent) -> None:
+    source: Source = event.source
+    user_id: str = source.user_id
+
+    user_info, err = data_service.create_user_data(user_id)
+    print(user_info)
 
 
 @handler_gemini.add(MessageEvent, message=TextMessage)
