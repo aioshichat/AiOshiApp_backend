@@ -13,6 +13,7 @@ class UserInfo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String)
+    user_name = db.Column(db.String)
     oshi_id = db.Column(db.Integer)
     push_message_flag = db.Column(db.Integer, nullable=False, default=0)
     memo = db.Column(db.String)
@@ -25,6 +26,7 @@ class UserInfo(db.Model):
         # 指定のユーザ情報追加
         instance = UserInfo()
         instance.user_id = add_data.get('user_id', None)
+        instance.user_name = add_data.get('user_name', None)
         instance.oshi_id = add_data.get('oshi_id', None)
         instance.memo = add_data.get('memo', None)
         instance.created_at = db.func.statement_timestamp()
@@ -37,6 +39,7 @@ class UserInfo(db.Model):
         user_info = {
             'id': instance.id,
             'user_id': instance.user_id,
+            'user_name': instance.user_name,
             'oshi_id': instance.oshi_id,
             'memo': instance.memo,
             'created_at': instance.created_at,
@@ -56,6 +59,7 @@ class UserInfo(db.Model):
         user_info = {
             'id': instance.id,
             'user_id': instance.user_id,
+            'user_name': instance.user_name,
             'oshi_id': instance.oshi_id,
             'memo': instance.memo,
             'created_at': instance.created_at,
@@ -89,6 +93,7 @@ class UserInfo(db.Model):
             user_info.append({
                 'id': instance2.id,
                 'user_id': instance2.user_id,
+                'user_name': instance2.user_name,
                 'oshi_id': instance2.oshi_id,
                 'push_message_flag': instance2.push_message_flag,
                 'memo': instance2.memo,
@@ -107,6 +112,7 @@ class UserInfo(db.Model):
         if instance == None:
             return f"user_info not found where user_id = {user_id}"
         
+        if update_data.get('user_name') != None: instance.user_name = update_data.get('user_name')
         if update_data.get('oshi_id') != None: instance.oshi_id = update_data.get('oshi_id')
         if update_data.get('memo') != None: instance.memo = update_data.get('memo')
         instance.updated_at = db.func.statement_timestamp()
@@ -117,6 +123,7 @@ class UserInfo(db.Model):
         user_info = {
             'id': instance.id,
             'user_id': instance.user_id,
+            'user_name': instance.user_name,
             'oshi_id': instance.oshi_id,
             'memo': instance.memo,
             'created_at': instance.created_at,

@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS user_info;
 CREATE TABLE user_info (
     id serial PRIMARY KEY,
     user_id text,
+    user_name text,
     oshi_id integer,
     push_message_flag integer DEFAULT 0,
     memo text,
