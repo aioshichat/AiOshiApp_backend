@@ -74,7 +74,8 @@ def handle_message(event: MessageEvent) -> None:
     reply_token_service.update_reply_token(user_id, reply_token)
 
     # ランダム秒sleepを入れる (0〜環境変数指定の秒の範囲でランダム)
-    wait_second = random.randrange(os.environ.get('SLEEP_SECOND', 5))
+    wait_second = random.randrange(0, int(os.environ.get('SLEEP_SECOND', 5)))
+    print(f'wait {wait_second}[s]')
     time.sleep(wait_second)
 
     line_bot_api.reply_message(
